@@ -208,7 +208,7 @@ async function generateChildrenStoryText(reqBody) {
   }
 
   const ageNum = parseInt(age);
-  if (isNaN(ageNum) || ageNum < 1 || ageNum > 18) {
+  if (isNaN(ageNum) || ageNum < 1 || ageNum > 12) {
     throw new Error("Age must be a number between 1 and 12");
   }
 
