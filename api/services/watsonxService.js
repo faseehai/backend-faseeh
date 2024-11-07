@@ -85,7 +85,7 @@ Rules:
      - حل يرتبط بمعنى المثل
      - خاتمة تذكر المثل وتوضح معناه
   6. اجعل طول القصة مناسباً (400-600 كلمة)
-  7. ادمج المثل في سياق القصة مرتين على الأقل
+  7. ادمج المثل في سياق القصة مرتين على الأكثر
   8. اختم القصة بذكر المثل والحكمة المستفادة منه
   `,
   marketing: `
@@ -98,7 +98,7 @@ Rules:
     
     Format the text with:
     1. A bold headline
-    2. 2-3 compelling paragraphs
+    2. 1-2 compelling paragraphs
     3. The call-to-action at the end
     
     Keep the tone professional yet conversational, and focus on creating emotional connection with the audience.
