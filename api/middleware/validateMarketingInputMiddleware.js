@@ -43,14 +43,14 @@ async function validateMarketingInputMiddleware(req, res, next) {
 
     // Check for missing fields
     if (!productService || !targetAudience || !keyBenefits || !callToAction) {
-      return res.status(400).json({
+      return res.status(200).json({
         status: "error",
         message:
           "جميع الحقول (اسم المنتج/الخدمة، الجمهور المستهدف، الفوائد الرئيسية، الدعوة للعمل) مطلوبة.",
       });
     }
     if (productService.length > MAX_CHAR_LIMIT) {
-      return res.status(400).json({
+      return res.status(200).json({
         status: "error",
         generated_text: `النص المدخل طويل جدًا. يجب ألا يزيد عن ${MAX_CHAR_LIMIT} حرفًا.`,
       });
@@ -85,7 +85,7 @@ async function validateMarketingInputMiddleware(req, res, next) {
       !isCallToActionArabic ||
       !areKeyBenefitsMostlyArabic
     ) {
-      return res.status(400).json({
+      return res.status(200).json({
         status: "error",
         message:
           "يجب أن يكون المحتوى المدخل في معظمه باللغة العربية مع السماح ببعض المصطلحات الإنجليزية.",

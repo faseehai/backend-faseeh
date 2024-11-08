@@ -37,14 +37,14 @@ async function validateProfessionalEmailInputMiddleware(req, res, next) {
 
     // Check presence of all required fields
     if (!purpose || !recipient || !tone || !mainDetails || !cta) {
-      return res.status(400).json({
+      return res.status(200).json({
         status: "error",
         message:
           "جميع الحقول (الغرض، المستلم، النبرة، التفاصيل الرئيسية، الدعوة للعمل) مطلوبة.",
       });
     }
     if (mainDetails.length > MAX_CHAR_LIMIT) {
-      return res.status(400).json({
+      return res.status(200).json({
         status: "error",
         generated_text: `النص المدخل طويل جدًا. يجب ألا يزيد عن ${MAX_CHAR_LIMIT} حرفًا.`,
       });
@@ -64,7 +64,7 @@ async function validateProfessionalEmailInputMiddleware(req, res, next) {
     console.log(`فحص الدعوة للعمل باللغة العربية: ${isCtaArabic}`);
 
     if (!isPurposeArabic || !isMainDetailsArabic || !isCtaArabic) {
-      return res.status(400).json({
+      return res.status(200).json({
         status: "error",
         message: "يجب أن يكون المحتوى المدخل باللغة العربية.",
       });

@@ -15,14 +15,14 @@ async function validateArabicInputMiddleware(req, res, next) {
 
     // Check if content is not empty
     if (!content || content.trim() === "") {
-      return res.status(400).json({
+      return res.status(200).json({
         status: "error",
         generated_text: "النص المدخل فارغ. الرجاء إدخال نص صالح.",
       });
     }
 
     if (content.length > MAX_CHAR_LIMIT) {
-      return res.status(400).json({
+      return res.status(200).json({
         status: "error",
         generated_text: `النص المدخل طويل جدًا. يجب ألا يزيد عن ${MAX_CHAR_LIMIT} حرفًا.`,
       });
