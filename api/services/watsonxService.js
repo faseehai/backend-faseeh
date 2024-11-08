@@ -242,11 +242,16 @@ async function generateMarketingText(reqBody) {
     callToAction,
   });
 
-  return await generateResponse({
+  // Generate the response
+  const response = await generateResponse({
     input,
     projectId: projectIds.marketing,
     modelId: "sdaia/allam-1-13b-instruct",
   });
+
+  // Ensure the response text does not exceed 400 characters
+  const trimmedResponse = response.generated_text.slice(0, 400);
+  return { ...response, generated_text: trimmedResponse };
 }
 
 const validateInputs = ({
