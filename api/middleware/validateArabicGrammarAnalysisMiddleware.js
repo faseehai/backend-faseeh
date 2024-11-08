@@ -2,7 +2,7 @@ const checkArabicGrammar = require("../utils/checkArabicGrammarForGrammarAnalysi
 const arabicRegex =
   /^[\u0600-\u06FF\s\u0750-\u077F\u08A0-\u08FF\u0660-\u0669.,؟،؛!(){}[\]«»"'\u064B-\u0652]*$/;
 const WatsonXService = require("../services/watsonxService");
-
+const MAX_CHAR_LIMIT = 150;
 function extendInput(input) {
   return input.length < 10 ? input.repeat(2) : input;
 }
@@ -41,7 +41,12 @@ async function validateArabicGrammarAnalysisMiddleware(req, res, next) {
         generated_text: "النص المدخل فارغ. الرجاء إدخال نص صالح.",
       });
     }
-
+    if (content.length > MAX_CHAR_LIMIT) {
+      return res.status(400).json({
+        status: "error",
+        generated_text: `النص المدخل طويل جدًا. يجب ألا يزيد عن ${MAX_CHAR_LIMIT} حرفًا.`,
+      });
+    }
     if (/^\d+$/.test(content.trim())) {
       return res.status(200).json({
         status: "error",

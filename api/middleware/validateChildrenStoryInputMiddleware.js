@@ -47,7 +47,7 @@ const prohibitedWords = [
 ];
 
 const MIN_CHAR_LIMIT = 5;
-const MAX_CHAR_LIMIT = 1000; // Adjustable based on model capabilities
+const MAX_CHAR_LIMIT = 150; // Adjustable based on model capabilities
 
 function containsProhibitedWords(content) {
   return prohibitedWords.some((word) => content.includes(word));

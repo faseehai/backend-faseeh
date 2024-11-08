@@ -1,7 +1,7 @@
 const MIN_LENGTH_FOR_FRANC = 20; // Minimum character length for using franc
 const arabicRegex =
   /^[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF\u0660-\u0669\s]+$/; // Regex to check if input is in Arabic script
-
+const MAX_CHAR_LIMIT = 150;
 function getCharacterCounts(text) {
   const arabicRegex = /[\u0600-\u06FF]/g; // Match Arabic characters
   const nonArabicRegex = /[a-zA-Z]/g; // Match English alphabet characters
@@ -49,7 +49,12 @@ async function validateMarketingInputMiddleware(req, res, next) {
           "جميع الحقول (اسم المنتج/الخدمة، الجمهور المستهدف، الفوائد الرئيسية، الدعوة للعمل) مطلوبة.",
       });
     }
-
+    if (productService.length > MAX_CHAR_LIMIT) {
+      return res.status(400).json({
+        status: "error",
+        generated_text: `النص المدخل طويل جدًا. يجب ألا يزيد عن ${MAX_CHAR_LIMIT} حرفًا.`,
+      });
+    }
     // Normalize whitespace for all fields
     productService = productService.trim().replace(/\s+/g, " ");
     targetAudience = targetAudience.trim().replace(/\s+/g, " ");

@@ -1,7 +1,7 @@
 const MIN_LENGTH_FOR_FRANC = 20; // Minimum character length for using franc
 const arabicRegex =
   /^[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF\u0660-\u0669\s]+$/; // Simple regex to check if input is in Arabic script
-
+const MAX_CHAR_LIMIT = 150; // Adjustable based on model capabilities
 function isArabicByRegex(text) {
   return arabicRegex.test(text);
 }
@@ -43,7 +43,12 @@ async function validateProfessionalEmailInputMiddleware(req, res, next) {
           "جميع الحقول (الغرض، المستلم، النبرة، التفاصيل الرئيسية، الدعوة للعمل) مطلوبة.",
       });
     }
-
+    if (mainDetails.length > MAX_CHAR_LIMIT) {
+      return res.status(400).json({
+        status: "error",
+        generated_text: `النص المدخل طويل جدًا. يجب ألا يزيد عن ${MAX_CHAR_LIMIT} حرفًا.`,
+      });
+    }
     // Trim and normalize whitespace for all fields
     purpose = purpose.trim().replace(/\s+/g, " ");
     mainDetails = mainDetails.trim().replace(/\s+/g, " ");

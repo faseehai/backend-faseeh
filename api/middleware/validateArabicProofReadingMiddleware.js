@@ -2,7 +2,7 @@ const checkArabicGrammar = require("../utils/checkArabicGrammarForProofReading")
 const arabicRegex =
   /^[\u0600-\u06FF\s\u0750-\u077F\u08A0-\u08FF\u0660-\u0669.,؟،؛!(){}[\]«»"'\u064B-\u0652]*$/;
 const WatsonXService = require("../services/watsonxService");
-
+const MAX_CHAR_LIMIT = 150;
 function extendInput(input) {
   return input.length < 10 ? input.repeat(2) : input;
 }
@@ -41,7 +41,12 @@ async function validateArabicProofReadingMiddleware(req, res, next) {
         generated_text: "النص المدخل فارغ. الرجاء إدخال نص صالح.",
       });
     }
-
+    if (content.length > MAX_CHAR_LIMIT) {
+      return res.status(400).json({
+        status: "error",
+        generated_text: `النص المدخل طويل جدًا. يجب ألا يزيد عن ${MAX_CHAR_LIMIT} حرفًا.`,
+      });
+    }
     // Check if the input is purely numbers or non-textual
     if (/^\d+$/.test(content.trim())) {
       return res.status(200).json({
@@ -83,22 +88,22 @@ async function validateArabicProofReadingMiddleware(req, res, next) {
     // Perform grammar and spelling check
     const { valid, suggestions } = await checkArabicGrammar(content);
 
-    if (!valid) {
-      console.log("Proofreading issues found:", suggestions);
+    // if (!valid) {
+    //   console.log("Proofreading issues found:", suggestions);
 
-      const correctedText = applyCorrections(content, suggestions);
+    //   const correctedText = applyCorrections(content, suggestions);
 
-      return res.status(200).json({
-        status: "success",
-        generated_text: correctedText,
-        suggestions: suggestions.map((s) => ({
-          message: s.message,
-          incorrect_text: s.context,
-          offset: s.offset,
-          replacements: s.replacements,
-        })),
-      });
-    }
+    //   return res.status(200).json({
+    //     status: "success",
+    //     generated_text: correctedText,
+    //     suggestions: suggestions.map((s) => ({
+    //       message: s.message,
+    //       incorrect_text: s.context,
+    //       offset: s.offset,
+    //       replacements: s.replacements,
+    //     })),
+    //   });
+    // }
 
     const generatedResult = await WatsonXService.generateProofReadingText({
       content,
