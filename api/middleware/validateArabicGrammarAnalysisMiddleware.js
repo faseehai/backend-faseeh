@@ -87,11 +87,6 @@ async function validateArabicGrammarAnalysisMiddleware(req, res, next) {
     } = await checkArabicGrammar(content);
 
     if (!valid) {
-      console.log(
-        "Proofreading issues found:",
-        JSON.stringify(suggestions, null, 2)
-      );
-
       const correctedText = applyCorrections(content, suggestions);
 
       return res.status(200).json({
@@ -115,9 +110,10 @@ async function validateArabicGrammarAnalysisMiddleware(req, res, next) {
       });
     }
 
-    const generatedResult = await WatsonXService.generateProofReadingText({
-      content,
-    });
+    const generatedResult =
+      await WatsonXService.generateGrammaticalAnalysisText({
+        content,
+      });
 
     return res.status(200).json({
       status: "success",
